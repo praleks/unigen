@@ -29,6 +29,7 @@ if [ ! -f "$TARGET/.gitignore" ]; then
     cat > "$TARGET/.gitignore" << 'GI_EOF'
 .claude
 CLAUDE.md
+.env
 assets
 screenshots
 Library/

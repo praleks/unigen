@@ -16,7 +16,7 @@ Describe the game you want. A staged pipeline plans architecture, generates art,
 
 - **Unity** project + **Unity MCP** connected to the agent session (e.g. Cursor).
 - **Python 3** + `pip install -r skills/unitygen/tools/requirements.txt`
-- **API keys:** `OPENROUTER_API_KEY`; `TRIPO3D_API_KEY` for 3D mesh generation.
+- **API keys:** copy [`.env.example`](.env.example) to `.env`, fill in values (`.env` is gitignored). Export into the environment before running Python tools, or use a loader your shell supports. Required: `OPENROUTER_API_KEY`; for 3D mesh generation: `TRIPO3D_API_KEY`.
 - **Claude Code** (or another client that supports skills / sub-agents) for published game folders.
 
 ## Create a game project
