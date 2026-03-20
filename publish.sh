@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Publish godogen skills into a target project directory.
+# Publish unitygen / unity-task skills into a target project directory.
 # Creates .claude/skills/ and copies a CLAUDE.md.
 #
 # Usage: ./publish.sh <target_dir> [claude_md]
@@ -31,8 +31,13 @@ if [ ! -f "$TARGET/.gitignore" ]; then
 CLAUDE.md
 assets
 screenshots
-.godot
-*.import
+Library/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+*.csproj
+*.sln
 GI_EOF
     echo "Created .gitignore"
 fi

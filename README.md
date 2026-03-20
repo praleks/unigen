@@ -1,60 +1,41 @@
-# Godogen: Claude Code skills that build complete Godot 4 projects
+# Unitygen: skills that build Unity projects with MCP + OpenRouter
 
 [![Watch the video](https://img.youtube.com/vi/eUz19GROIpY/maxresdefault.jpg)](https://youtu.be/eUz19GROIpY)
 
 [Watch the demos](https://youtu.be/eUz19GROIpY) · [Prompts](demo_prompts.md)
 
-You describe what you want. An AI pipeline designs the architecture, generates the art, writes every line of code, captures screenshots from the running engine, and fixes what doesn't look right. The output is a real Godot 4 project with organized scenes, readable scripts, and proper game architecture. Handles 2D and 3D, runs on commodity hardware.
+Describe the game you want. A staged pipeline plans architecture, generates art, implements C# and scenes through the **Unity Editor (MCP)**, captures screenshots, and runs **vision QA** via **OpenRouter**. Output is a real Unity project under `Assets/`.
 
 ## How it works
 
-- **Two Claude Code skills** orchestrate the entire pipeline — one plans, one executes. Each task runs in a fresh context to stay focused.
-- **Godot 4 output** — real projects with proper scene trees, scripts, and asset organization.
-- **Asset generation** — Gemini creates 2D art and textures; Tripo3D converts selected images to 3D models. Budget-aware: maximizes visual impact per cent spent.
-- **GDScript expertise** — custom-built language reference and lazy-loaded API docs for all 850+ Godot classes compensate for LLMs' thin training data on GDScript.
-- **Visual QA closes the loop** — captures actual screenshots from the running game and analyzes them with Gemini Flash vision. Catches z-fighting, missing textures, broken physics.
-- **Runs on commodity hardware** — any PC with Godot and Claude Code works.
+- **Two skills** — **unitygen** (orchestrator) and **unity-task** (per-task executor, forked context in Claude Code).
+- **Unity MCP** — scenes, GameObjects, scripts, console, screenshots against a live Editor.
+- **OpenRouter** — image generation and vision QA (`OPENROUTER_API_KEY`, optional `OPENROUTER_IMAGE_MODEL` / `OPENROUTER_VISION_MODEL`).
+- **Tripo3D** — optional image-to-GLB for 3D (`TRIPO3D_API_KEY`).
+- **Python tools** in `skills/unitygen/tools/` (`asset_gen.py`, rembg, sprite pipeline).
 
-## Getting started
+## Prerequisites
 
-### Prerequisites
+- **Unity** project + **Unity MCP** connected to the agent session (e.g. Cursor).
+- **Python 3** + `pip install -r skills/unitygen/tools/requirements.txt`
+- **API keys:** `OPENROUTER_API_KEY`; `TRIPO3D_API_KEY` for 3D mesh generation.
+- **Claude Code** (or another client that supports skills / sub-agents) for published game folders.
 
-- [Godot 4](https://godotengine.org/download/) (headless or editor) on `PATH`
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
-- API keys as environment variables:
-  - `GOOGLE_API_KEY` — Gemini, used for image generation and visual QA
-  - `TRIPO3D_API_KEY` — [Tripo3D](https://platform.tripo3d.ai/), used for image-to-3D model conversion (only needed for 3D games)
-- Python 3 with pip (asset tools install their own deps)
-- Tested on Ubuntu and Debian. macOS is untested — screenshot capture depends on X11/xvfb/Vulkan and will need a native capture path to work.
+## Create a game project
 
-### Create a game project
-
-This repo is the skill development source. To start making a game, run `publish.sh` to set up a new project folder with all skills installed:
+This repo is the skill source. Publish into a Unity project directory:
 
 ```bash
-./publish.sh ~/my-game          # uses teleforge.md as CLAUDE.md
-./publish.sh ~/my-game local.md # uses a custom CLAUDE.md instead
+./publish.sh ~/my-unity-game          # uses teleforge.md as CLAUDE.md
+./publish.sh ~/my-unity-game local.md
 ```
 
-This creates the target directory with `.claude/skills/` and a `CLAUDE.md`, then initializes a git repo. Open Claude Code in that folder and tell it what game to make — the `/godogen` skill handles everything from there.
+Open the target in your agent IDE, enable Unity MCP, run **`/unitygen`**, and describe the game.
 
-### Running on a VM
+## Notes
 
-A single generation run can take several hours. Running on a cloud VM keeps your local machine free and gives the pipeline a GPU for Godot's screenshot capture. A basic GCE instance with a T4 or L4 GPU works well.
-
-The default `CLAUDE.md` (`teleforge.md`) is set up for [Teleforge](https://github.com/htdt/teleforge) — a lightweight Telegram bridge that lets you monitor progress and send messages to the running session from your phone. If you don't use Teleforge, pass your own `CLAUDE.md` to `publish.sh` or edit the generated one after publishing.
-
-## Is Claude Code the only option?
-
-The skills were tested across different setups. Claude Code with Opus 4.6 delivers the best outcome. Sonnet 4.6 works but requires more guidance from the user. [OpenCode](https://opencode.ai/) was quite nice and porting the skills is straightforward — I'd recommend it if you're looking for an alternative.
-
-## Roadmap
-
-- Migrate image generation to `grok-imagine-image` (cheaper per image)
-- Migrate spritesheets to `grok-imagine-video` (animated sprites from video)
-- Add recipes for game builds (Android export)
-- Explore C# as GDScript alternative
-- Publish a full game end-to-end as a public demo
-- Explore Bevy Engine as Godot alternative
+- Budget and asset CLI behavior match the previous generator; ledger entries use `openrouter_image` for image calls.
+- Long runs suit a VM; GPU helps Unity Play Mode and captures, not the LLM.
+- Default `teleforge.md` targets [Teleforge](https://github.com/htdt/teleforge) + Telegram MCP — swap `CLAUDE.md` if unused.
 
 Follow progress: [@alex_erm](https://x.com/alex_erm)
