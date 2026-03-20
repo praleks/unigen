@@ -1,8 +1,6 @@
 # Unitygen: skills that build Unity projects with MCP + OpenRouter
 
-[![Watch the video](https://img.youtube.com/vi/eUz19GROIpY/maxresdefault.jpg)](https://youtu.be/eUz19GROIpY)
-
-[Watch the demos](https://youtu.be/eUz19GROIpY) · [Prompts](demo_prompts.md)
+Example prompts: [demo_prompts.md](demo_prompts.md)
 
 Describe the game you want. A staged pipeline plans architecture, generates art, implements C# and scenes through the **Unity Editor (MCP)**, captures screenshots, and runs **vision QA** via **OpenRouter**. Output is a real Unity project under `Assets/`.
 
