@@ -12,6 +12,7 @@ from openrouter_media import (
     extract_first_generated_png,
     png_bytes_to_data_url,
 )
+from dotenv_loader import load_dotenv_from_tree
 from tripo3d import MODEL_V3, image_to_glb
 
 TOOLS_DIR = Path(__file__).parent
@@ -251,6 +252,7 @@ def cmd_set_budget(args):
 
 
 def main():
+    load_dotenv_from_tree()
     parser = argparse.ArgumentParser(description="Asset Generator — images (OpenRouter) and GLBs (Tripo3D)")
     sub = parser.add_subparsers(dest="command", required=True)
 

@@ -4,6 +4,8 @@ PNG images via **OpenRouter** (models with image output). GLB via **Tripo3D** (u
 
 ## Environment
 
+CLI loads `.env` from the current working directory or a parent folder (`python-dotenv`, see `unitygen/tools/dotenv_loader.py`). Existing environment variables are not overwritten.
+
 - `OPENROUTER_API_KEY` — required for images and for `unity-task` VQA (vision uses a separate model).
 - `OPENROUTER_IMAGE_MODEL` — optional; default `google/gemini-3.1-flash-image-preview` in tools.
 - `OPENROUTER_VISION_MODEL` — optional; used by `../unity-task/scripts/visual_qa.py`.

@@ -12,6 +12,7 @@ _TOOLS = _SKILLS_ROOT / "unitygen" / "tools"
 if str(_TOOLS) not in sys.path:
     sys.path.insert(0, str(_TOOLS))
 
+from dotenv_loader import load_dotenv_from_tree
 from openrouter_media import chat_completions, default_vision_model, extract_assistant_text, png_bytes_to_data_url
 
 STATIC_PROMPT = Path(__file__).parent / "static_prompt.md"
@@ -35,6 +36,7 @@ def _maybe_downscale_png(data: bytes, max_side: int) -> bytes:
 
 
 def main():
+    load_dotenv_from_tree()
     args = sys.argv[1:]
     context = None
     if len(args) >= 2 and args[0] == "--context":
